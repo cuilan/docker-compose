@@ -1,0 +1,15 @@
+version: '3'
+services:
+  db:
+    image: redis:6-alpine
+    # 容器名
+    container_name: redis-6-alpine
+    #restart: always
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '6379:6379'
+    volumes:
+      - "/Users/zhangyan/data_docker/redis/db:/bitnami/redis/data"
+      - "./conf/redis.conf:/usr/local/etc/redis/redis.conf"
+    #command: redis-server --appendonly yes --requirepass 123456

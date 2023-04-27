@@ -1,0 +1,12 @@
+version: '3'
+services:
+  cloud-torrent:
+    restart: always
+    image: jpillora/cloud-torrent
+    container_name: cloud-torrent
+    ports:
+      - '3000:3000'
+    volumes:
+      - '/home/shared/download:/downloads'
+
+# docker run -d -p 3000:3000 -v /d_ownload:/downloads jpillora/cloud-torrent
