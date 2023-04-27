@@ -1,0 +1,10 @@
+version: '3.7'
+services:
+  coredns:
+    image: coredns/coredns:1.9.3
+    container_name: coredns
+    network_mode: "host"
+    restart: always
+    volumes:
+      - ./coredns:/etc/coredns
+    command: -conf=/etc/coredns/Corefile

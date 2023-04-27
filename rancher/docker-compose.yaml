@@ -1,0 +1,10 @@
+version: '3.7'
+services:
+  rancher:
+    image: rancher/rancher:v2.6.3
+    container_name: rancher
+    restart: unless-stopped
+    privileged: true
+    ports:
+      - "20080:80"
+      - "20443:443"

@@ -1,0 +1,21 @@
+version: "3"
+services:
+  polaris:
+    image: polarismesh/polaris-server-standalone:v1.10.0-alpha.1
+    container_name: polaris
+    ports:
+      # polaris console 8080
+      - 18080:8080
+      # polaris http/tcp 注册中心 8090
+      - 18090:8090
+      # polaris grpc/tcp 注册中心 8091
+      - 18091:8091
+      # polaris grpc/tcp 配置中心 8093
+      - 18093:8093
+      # polaris_prometheus_sd 9000
+      # prometheus 9090
+      # pushgateway 9091
+    restart: unless-stopped
+
+# http://127.0.0.1:8080
+# account/password: polaris/polaris

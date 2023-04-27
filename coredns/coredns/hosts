@@ -1,0 +1,17 @@
+# prod
+10.10.5.3 zy.com
+10.10.5.3 www.zy.com
+
+# test
+10.10.5.4 ty.com
+10.10.5.4 www.ty.com
+10.10.5.4 dl.zy.com
+
+# platform
+10.10.5.3 eureka.zy.com
+
+# service
+10.10.5.3 core.service
+
+# mysql
+10.10.5.3 test.mysql

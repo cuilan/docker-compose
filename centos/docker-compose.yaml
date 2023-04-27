@@ -1,0 +1,18 @@
+version: '3.9'
+services:
+  centos7:
+    container_name: centos7
+    image: centos:centos7
+    #restart: always
+    stdin_open: true
+    tty: true
+    privileged: true
+    ports:
+      - "8022:22"
+      - "8021:21"
+    networks:
+      - centos_default
+
+networks:
+  centos_default:
+    name: centos_default
