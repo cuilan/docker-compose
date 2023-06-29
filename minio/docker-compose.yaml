@@ -8,8 +8,8 @@ services:
         # new version
       #- '9001:9001'
     environment:
-      MINIO_ACCESS_KEY
-      MINIO_SECRET_KEY
+      - MINIO_ACCESS_KEY
+      - MINIO_SECRET_KEY
     volumes:
       - /data_minio:/data
     # new version
