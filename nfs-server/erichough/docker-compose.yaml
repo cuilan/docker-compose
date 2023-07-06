@@ -1,0 +1,25 @@
+version: '3.7'
+services:
+  erichough-nfs:
+    image: erichough/nfs-server:2.2.1
+    container_name: erichough-nfs
+    restart: unless-stopped
+    privileged: true
+    volumes:
+      # 定义容器内共享目录、权限
+      - ./exports.txt:/etc/exports:ro
+      # 定义挂载目录
+      - /data_nfs_ro:/data/readonly
+      - /data_nfs_rw:/data/readwrite
+    ports:
+      # NFSv4 only
+      #- 2049:2049
+      # NFSv3
+      - 2049:2049
+      - 2049:2049/udp
+      - 111:111
+      - 111:111/udp
+      - 32765:32765 
+      - 32765:32765/udp
+      - 32767:32767
+      - 32767:32767/udp

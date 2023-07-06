@@ -1,0 +1,2 @@
+/data/readonly *(ro,no_subtree_check)
+/data/readwrite 10.121.1.202/32(rw,no_subtree_check)
