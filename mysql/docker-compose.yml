@@ -10,8 +10,8 @@ services:
     #restart: always
     environment:
       # root管理员用户密码
-      MYSQL_ROOT_PASSWORD
-      MYSQL_ROOT_HOST
+      - MYSQL_ROOT_PASSWORD
+      - MYSQL_ROOT_HOST
     ports:
       # host物理直接映射端口为6606
       - '3306:3306'

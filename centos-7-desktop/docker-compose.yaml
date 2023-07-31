@@ -1,0 +1,14 @@
+version: '3.9'
+services:
+  centos7-desktop:
+    container_name: centos7-desktop
+    image: kasmweb/centos-7-desktop:1.13.0
+    environment:
+      - VNC_PW=123456
+    ports:
+      - 4901:4901
+      - 5901:5901
+      - 6901:6901
+    volumes:
+      - ./kasmvnc.yaml:/etc/kasmvnc/kasmvnc.yaml
+
