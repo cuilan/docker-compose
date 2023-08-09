@@ -1,0 +1,21 @@
+# docker network create cuilan
+
+version: '3.9'
+services:
+  it-tools:
+    image: corentinth/it-tools
+    container_name: it-tools
+    restart: unless-stopped
+    networks:
+      - cuilan
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - 8080:80
+    volumes:
+      - /etc/timezone:/etc/timezone
+
+networks:
+  cuilan:
+    name: cuilan
+    external: true
