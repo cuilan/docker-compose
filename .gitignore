@@ -1,6 +1,11 @@
-# common
+# Log file
 *.log
-logs
-*/logs
+log/
+logs/
+
+### VS Code ###
+.vscode/
+
+### Mac Os ###
 .DS_Store
-*/.DS_Store
+**/.DS_Store
