@@ -1,0 +1,7 @@
+version: '3.9'
+services:
+  redisinsight:
+    image: redislabs/redisinsight:latest
+    container_name: redisinsight
+    ports:
+      - 8001:8001
