@@ -1,0 +1,25 @@
+version: '3.9'
+services:
+  redis-stack:
+    image: redis/redis-stack:latest
+    container_name: redis-stack
+    environment:
+      # extra arguments for Redis
+      - REDIS_ARGS="--requirepass 123456"
+      # arguments for RediSearch
+      #- REDISEARCH_ARGS
+      # arguments for RedisJSON
+      #- REDISJSON_ARGS
+      # arguments for RedisGraph
+      #- REDISGRAPH_ARGS
+      # arguments for RedisTimeSeries
+      #- REDISTIMESERIES_ARGS="RETENTION_POLICY=20"
+      # arguments for RedisBloom
+      #- REDISBLOOM_ARGS
+    ports:
+      - 8001:8001
+      - 6379:6379
+    volumes:
+      - ./data:/data
+      #- ./redis-stack.conf:/redis-stack.conf
+
