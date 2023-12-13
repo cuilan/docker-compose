@@ -1,15 +1,10 @@
 #!/bin/bash
 
-# wait for the docker-compose depends_on start up, so sleep N seconds.
-sleep 3
+# 进入容器
+docker exec -it redis-6371 /bin/sh
 
-master_1=
-master_2=
-master_3=
-slave_1=
-slave_2=
-slave_3=
+# 创建集群
+/usr/local/bin/redis-cli -a 123456 --cluster create redis-6371:6371 redis-6372:6372 redis-6373:6373 redis-6374:6374 redis-6375:6375 redis-6376:6376 --cluster-replicas 1
 
-docker exec --rm -it redis:7-alpine redis-cli \
-    --cluster create $master_1:6379 $master_2:6379 $master_3:6379 $slave_1:6379 $slave_2:6379 $slave_3:6379 \
-    --cluster-replicas 1
+# 检查集群
+docker exec -it redis-6371 /usr/local/bin/redis-cli -a 123456 --cluster check redis-6371:6371

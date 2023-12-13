@@ -4,53 +4,70 @@ networks:
   redis-network:
     name: redis-network
 
+redis-cluster: &redis-cluster
+  image: redis:7-alpine
+  command: redis-server /usr/local/etc/redis/redis.conf
+  restart: always
+  networks:
+    redis-network:
+
 services:
-  redis-cluster:
-    image: redis:7-alpine
-    command: redis-server cluster-enabled yes --cluster-config-file /usr/local/etc/redis/nodes.conf --cluster-node-timeout 5000
-    networks:
-      redis-network:
+  redis-6371:
+    <<: *redis-cluster
+    container_name: redis-6371
+    hostname: redis-6371
+    ports:
+      - "6371:6371"
     volumes:
-      - "./conf/nodes.conf:/usr/local/etc/redis/nodes.conf"
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-      start_period: 30s
+      - "./conf/6371/conf/redis.conf:/usr/local/etc/redis/redis.conf"
+      - "./conf/6371/data:/data"
 
-  redis-master-1:
-    container_name: redis-master-1
-    networks:
-      redis-network:
-    restart: always
+  redis-6372:
+    <<: *redis-cluster
+    container_name: redis-6372
+    hostname: redis-6372
+    ports:
+      - "6372:6372"
+    volumes:
+      - "./conf/6372/conf/redis.conf:/usr/local/etc/redis/redis.conf"
+      - "./conf/6372/data:/data"
 
-  redis-master-2:
-    container_name: redis-master-2
-    networks:
-      redis-network:
-    restart: always
+  redis-6373:
+    <<: *redis-cluster
+    container_name: redis-6373
+    hostname: redis-6373
+    ports:
+      - "6373:6373"
+    volumes:
+      - "./conf/6373/conf/redis.conf:/usr/local/etc/redis/redis.conf"
+      - "./conf/6373/data:/data"
 
-  redis-master-3:
-    container_name: redis-master-3
-    networks:
-      redis-network:
-    restart: always
+  redis-6374:
+    <<: *redis-cluster
+    container_name: redis-6374
+    hostname: redis-6374
+    ports:
+      - "6374:6374"
+    volumes:
+      - "./conf/6374/conf/redis.conf:/usr/local/etc/redis/redis.conf"
+      - "./conf/6374/data:/data"
 
-  redis-slave-1:
-    container_name: redis-slave-1
-    networks:
-      redis-network:
-    restart: always
+  redis-6375:
+    <<: *redis-cluster
+    container_name: redis-6375
+    hostname: redis-6375
+    ports:
+      - "6375:6375"
+    volumes:
+      - "./conf/6375/conf/redis.conf:/usr/local/etc/redis/redis.conf"
+      - "./conf/6375/data:/data"
 
-  redis-slave-2:
-    container_name: redis-slave-2
-    networks:
-      redis-network:
-    restart: always
-
-  redis-slave-3:
-    container_name: redis-slave-3
-    networks:
-      redis-network:
-    restart: always
+  redis-6376:
+    <<: *redis-cluster
+    container_name: redis-6376
+    hostname: redis-6376
+    ports:
+      - "6376:6376"
+    volumes:
+      - "./conf/6376/conf/redis.conf:/usr/local/etc/redis/redis.conf"
+      - "./conf/6376/data:/data"

@@ -10,12 +10,11 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - "./data:/bitnami/redis/data"
+      - "./data:/data"
       - "./conf/redis.conf:/usr/local/etc/redis/redis.conf"
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
-      interval: 30s
-      timeout: 5s
+      interval: 15s
+      timeout: 15s
       retries: 3
-      start_period: 30s
     #command: redis-server --appendonly yes --requirepass 123456
