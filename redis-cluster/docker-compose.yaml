@@ -1,0 +1,56 @@
+version: '3.7'
+
+networks:
+  redis-network:
+    name: redis-network
+
+services:
+  redis-cluster:
+    image: redis:7-alpine
+    command: redis-server cluster-enabled yes --cluster-config-file /usr/local/etc/redis/nodes.conf --cluster-node-timeout 5000
+    networks:
+      redis-network:
+    volumes:
+      - "./conf/nodes.conf:/usr/local/etc/redis/nodes.conf"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  redis-master-1:
+    container_name: redis-master-1
+    networks:
+      redis-network:
+    restart: always
+
+  redis-master-2:
+    container_name: redis-master-2
+    networks:
+      redis-network:
+    restart: always
+
+  redis-master-3:
+    container_name: redis-master-3
+    networks:
+      redis-network:
+    restart: always
+
+  redis-slave-1:
+    container_name: redis-slave-1
+    networks:
+      redis-network:
+    restart: always
+
+  redis-slave-2:
+    container_name: redis-slave-2
+    networks:
+      redis-network:
+    restart: always
+
+  redis-slave-3:
+    container_name: redis-slave-3
+    networks:
+      redis-network:
+    restart: always

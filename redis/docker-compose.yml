@@ -1,15 +1,21 @@
 version: '3'
 services:
-  db:
-    image: redis:6-alpine
+  redis:
+    image: redis:7-alpine
     # 容器名
-    container_name: redis-6-alpine
+    container_name: redis7-alpine
     #restart: always
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
     ports:
-      - '6379:6379'
+      - "6379:6379"
     volumes:
-      - "/Users/zhangyan/data_docker/redis/db:/bitnami/redis/data"
+      - "./data:/bitnami/redis/data"
       - "./conf/redis.conf:/usr/local/etc/redis/redis.conf"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
     #command: redis-server --appendonly yes --requirepass 123456
