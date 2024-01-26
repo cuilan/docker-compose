@@ -1,0 +1,17 @@
+version: '3.9'
+services:
+  ftp-server:
+    container_name: ftp-server
+    image: garethflowers/ftp-server
+    environment:
+      - FTP_USER=zy
+      - FTP_PASS=123456
+    restart: always
+    network_mode: 'host'
+    volumes:
+      - './vsftpd.conf:/etc/vsftpd.conf'
+      - '/data/ftp:/home/user'
+    ports:
+      - '2000:20/tcp'
+      - '2001:21/tcp'
+      - '40000-40009:40000-40009/tcp'
