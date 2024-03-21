@@ -11,6 +11,7 @@ services:
       - 5000:5000
     volumes:
       - /data/registry:/var/lib/registry
+      - /etc/localtime:/etc/localtime
 
   registry-web:
     image: hyper/docker-registry-web
@@ -24,5 +25,6 @@ services:
       #- REGISTRY_NAME=localhost:5000
     volumes:
       - ./config.yml:/conf/config.yml
+      - /etc/localtime:/etc/localtime
     depends_on:
       - registry
