@@ -13,10 +13,11 @@ services:
     ports:
       - '3306:3306'
     volumes:
+      # 容器的配置目录挂载到host物理机目录./conf
+      #- ./conf:/etc/mysql/conf.d
+      - ./init-scripts:/docker-entrypoint-initdb.d
       - data:/var/lib/mysql
       # - "/tmp/lima/data_docker/mysql/db:/var/lib/mysql"
-      # 容器的配置目录挂载到host物理机目录./conf
-      # - "./conf:/etc/mysql/conf.d"
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 
 volumes:
