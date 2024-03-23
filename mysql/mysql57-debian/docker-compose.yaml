@@ -7,6 +7,7 @@ services:
     volumes:
       # 该目录下可放置初始化sql文件，以文件名字母顺序执行
       - ./init-scripts:/docker-entrypoint-initdb.d
+      - ./conf/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf
       - data:/var/lib/mysql
     ports:
       - "3306:3306"
