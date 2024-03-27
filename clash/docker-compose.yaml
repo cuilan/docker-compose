@@ -1,0 +1,11 @@
+version: '3'
+services:
+  clash:
+    image: centralx/clash
+    container_name: clash
+    volumes:
+      - ./configs/config.yaml:/home/runner/.config/clash/config.yaml
+    ports:
+      - "7890:7890"
+      - "8090:80"
+    restart: always
