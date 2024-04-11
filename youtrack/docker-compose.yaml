@@ -1,0 +1,22 @@
+version: '3.9'
+services:
+  youtrack:
+    image: jetbrains/youtrack:2024.1.27971
+    container_name: youtrack
+    platform: linux/amd64
+    restart: unless-stopped
+    environment:
+      - YOUTRACK_LICENSE_KEY=
+    ports:
+      - 8080:8080
+    volumes:
+      - data:/opt/youtrack/data
+      - conf:/opt/youtrack/conf
+      - conf:/opt/youtrack/logs
+      - backups:/opt/youtrack/backups
+
+volumes:
+  data:
+  conf:
+  logs:
+  backups:
