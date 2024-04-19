@@ -1,7 +1,14 @@
-version: '3.9'
 services:
   redisinsight:
-    image: redislabs/redisinsight:latest
+    image: redis/redisinsight:latest
     container_name: redisinsight
     ports:
-      - 8001:8001
+      - 5540:5540
+    #volumes:
+    #  - /data/redis-insight/data:/data
+
+# volumes:
+#   redisinsight_data:
+#     driver: local
+#   redisinsight_logs:
+#     driver: local
