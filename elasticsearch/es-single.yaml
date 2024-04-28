@@ -7,6 +7,10 @@ services:
       - 9300:9200
     environment:
       - node.name=es01
+      # 单节点模式
+      - discovery.type=single-node
+      # 关闭ssl验证
+      - xpack.security.enabled=false
       - cluster.name=${CLUSTER_NAME}
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
     mem_limit: ${MEM_LIMIT}
