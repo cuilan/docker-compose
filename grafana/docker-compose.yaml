@@ -1,7 +1,6 @@
-version: '3.7'
 services:
   grafana:
-    image: grafana/grafana:8.1.5
+    image: grafana/grafana:11.0.0
     container_name: grafana
     environment:
       GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: "true"
@@ -13,8 +12,8 @@ services:
       grafana: null
     ports:
       - 3000:3000
-    volumes:
-      - ./example_cluster/grafana/provisioning:/etc/grafana/provisioning
+    #volumes:
+      #- ./example_cluster/grafana/provisioning:/etc/grafana/provisioning
 
 networks:
   grafana:

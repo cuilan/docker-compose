@@ -1,0 +1,36 @@
+global:
+  # 默认采集目标数据指标的频率 default = 1m
+  scrape_interval: 30s
+  # 采集请求的超时时间 default = 10s
+  scrape_timeout: 10s
+  # 评估规则的频率 default = 1m
+  evaluation_interval: 30s
+
+# Alerting 指定了与 Alertmanager 相关的配置
+alerting:
+  alertmanagers:
+    - static_configs:
+      - targets:
+          #- alertmanagers:9093
+
+# rule_files 指定了 globs 列表，从所有匹配的文件中读取规则和告警
+rule_files:
+  #- "first_rules.yml"
+
+# 数据采集的配置列表
+scrape_configs:
+  # 数据采集的作业名称
+  - job_name: prometheus
+    static_configs:
+      - targets:
+          - "10.121.1.141:9090"
+
+# 以下内容为 SpringBoot 应用配置
+  - job_name: sfmis-api-protal
+    # 配置用于请求的协议
+    scheme: https
+    scrape_interval: 30s
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets:
+          - "test-sfmis.weattech.com"
