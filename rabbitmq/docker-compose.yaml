@@ -1,4 +1,3 @@
-version: '3.7'
 services:
   test-rabbitmq:
     image: rabbitmq:3.11.13-management
