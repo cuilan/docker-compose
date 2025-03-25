@@ -10,7 +10,7 @@ services:
     volumes:
       - .env:/etc/config.env
       - ./data:/mnt/data
-    command: ["server", "--console-address :9001"]
+    command: ["server", "--console-address", ":9001"]
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
       interval: 30s
