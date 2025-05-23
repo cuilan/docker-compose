@@ -9,8 +9,8 @@ services:
     restart: always
     network_mode: 'host'
     volumes:
-      - './vsftpd.conf:/etc/vsftpd.conf'
-      - '/data/ftp:/home/user'
+      - ./vsftpd.conf:/etc/vsftpd.conf
+      - /data/ftp:/home/user
     ports:
       - '2000:20/tcp'
       - '2001:21/tcp'
