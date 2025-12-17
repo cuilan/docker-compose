@@ -30,6 +30,7 @@ services:
       - ./icons:/app/public/icons:ro
       # 壁纸目录（只读）
       - ./images:/app/public/images:ro
+      #- /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       - HOMEPAGE_ALLOWED_HOSTS=*
       - PUID=1000

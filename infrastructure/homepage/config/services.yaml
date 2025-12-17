@@ -3,25 +3,29 @@
 # https://gethomepage.dev/configs/services/
 
 - Infrastructure: # 第一组：基础设施
-    - Xuanwu Node (PVE):
+    - Network:
+        icon: /icons/dianxin.ico
+        href: http://10.10.1.1/cgi-bin/luci
+        description: 路由器管理 - 10.10.1.1
+    - Alienware (PVE):
         icon: proxmox.png
-        href: https://10.10.1.X:8006 # 你的 PVE 地址
-        description: 玄武号 - i7-4785T
+        href: https://10.10.1.3:8006
+        description: 玄武号 - i7-4785T - 10.10.1.3
         widget:
           type: proxmox
-          url: https://10.10.1.X:8006
+          url: https://10.10.1.3:8006
           user: root@pam
           password: "你的PVE密码" # 建议在 secrets 中引用，这里仅演示
           node: Xuanwu # 你的 PVE 节点名
 
     - Phoenix NAS (FnOS):
-        icon: debian.png
+        icon: /icons/fnos.ico
         href: http://10.10.1.4:5000
-        description: 凤凰号 - i3-4130T
+        description: 凤凰号 - i3-4130T - 10.10.1.4
         # 监控本机 Docker 状态
-        widget:
-          type: docker
-          socket: /var/run/docker.sock
+        #widget:
+          #type: docker
+          #socket: /var/run/docker.sock
 
 - Media Center: # 第二组：影音娱乐
     - Jellyfin:
