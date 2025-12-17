@@ -36,17 +36,13 @@ services:
       - PGID=1000
       - UMASK=022
     # 资源限制
-    deploy:
-      resources:
-        limits:
-          cpus: '1.0'
-          memory: 512M
-        reservations:
-          cpus: '0.25'
-          memory: 128M
+    # 在标准 docker-compose v5.0.0 中，使用以下语法设置资源限制（虽然已标记为弃用，但仍可用）
+    mem_limit: 512m
+    mem_reservation: 128m
+    cpus: '1.0'
     # 健康检查
     healthcheck:
-      test: ['CMD-SHELL', 'wget --no-verbose --tries=1 --spider http://localhost:3000 || exit 1']
+      test: ['CMD-SHELL', 'wget --no-verbose --tries=1 --spider http://localhost:3000']
       interval: 30s
       timeout: 10s
       retries: 3

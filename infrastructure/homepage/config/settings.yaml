@@ -1,0 +1,55 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/configs/settings/
+
+title: Home Lab
+description: A description of my awesome homepage
+
+# You can customize the start_url as required for installable apps. The default is "/".
+# 页面起始位置
+#startUrl: https://custom.url
+
+# 标签页icon
+#favicon: https://www.google.com/favicon.ico
+
+background:
+  image: https://images.unsplash.com/photo-1502790671504-542ad42d5189?auto=format&fit=crop&w=2560&q=80
+  # 模糊
+  #blur: none      # sm, "", md, xl... see https://tailwindcss.com/docs/backdrop-blur
+  # 饱和度
+  #saturate: 50    # 0, 50, 100... see https://tailwindcss.com/docs/backdrop-saturate
+  # 亮度
+  #brightness: 50  # 0, 50, 75... see https://tailwindcss.com/docs/backdrop-brightness
+  # 不透明度
+  opacity: 100    # 0-100
+
+#favicon: https://www.google.com/favicon.ico
+
+# 卡片背景模糊
+cardBlur: xs # xs, md, etc... see https://tailwindcss.com/docs/backdrop-blur
+
+# 主题
+theme: dark # or light
+
+# Color Palette  色彩调色板
+# 你可以通过传递颜色选项来配置固定的调色板（并禁用调色板切换器），比如这样：
+#color: slate
+
+blockHighlights:
+  levels:
+    good: "bg-emerald-500/40 text-emerald-950 dark:bg-emerald-900/60 dark:text-emerald-400"
+    warn: "bg-amber-300/30 text-amber-900 dark:bg-amber-900/30 dark:text-amber-200"
+    danger: "bg-rose-700/45 text-rose-200 dark:bg-rose-950/70 dark:text-rose-400"
+
+# 布局
+layout:
+  # 响应式布局：大屏显示5列，中屏3列，手机1列
+  Infrastructure:
+    style: row
+    columns: 4
+  Media Center:
+    style: row
+    columns: 4
+
+# 语言
+language: zh-Hans

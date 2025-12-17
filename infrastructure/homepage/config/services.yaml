@@ -1,0 +1,35 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/configs/services/
+
+- Infrastructure: # 第一组：基础设施
+    - Xuanwu Node (PVE):
+        icon: proxmox.png
+        href: https://10.10.1.X:8006 # 你的 PVE 地址
+        description: 玄武号 - i7-4785T
+        widget:
+          type: proxmox
+          url: https://10.10.1.X:8006
+          user: root@pam
+          password: "你的PVE密码" # 建议在 secrets 中引用，这里仅演示
+          node: Xuanwu # 你的 PVE 节点名
+
+    - Phoenix NAS (FnOS):
+        icon: debian.png
+        href: http://10.10.1.4:5000
+        description: 凤凰号 - i3-4130T
+        # 监控本机 Docker 状态
+        widget:
+          type: docker
+          socket: /var/run/docker.sock
+
+- Media Center: # 第二组：影音娱乐
+    - Jellyfin:
+        icon: jellyfin.png
+        href: http://10.10.1.4:8096
+        description: 影视库
+        widget:
+          type: jellyfin
+          url: http://10.10.1.4:8096
+          key: "你的Jellyfin API Key"
+          enableBlocks: true # 显示正在播放的内容
