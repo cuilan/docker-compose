@@ -9,3 +9,8 @@ logs/
 ### Mac Os ###
 .DS_Store
 **/.DS_Store
+
+# 临时文件
+*.tmp
+*.swp
+*~

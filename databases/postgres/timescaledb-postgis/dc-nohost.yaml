@@ -1,0 +1,65 @@
+# network_mode 为非 host 模式时启动
+services:
+  timescaledb-postgis:
+    image: timescale/timescaledb-ha:pg16-all-amd64
+    container_name: timescaledb-postgis
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - LANG=en_US.utf8
+      - TZ=Asia/Shanghai
+      - POSTGRES_DB=${POSTGRES_DB:-postgres}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    # 挂载数据目录到机械盘
+    volumes:
+      # 主数据目录挂载 /data
+      # WAL目录（TimescaleDB HA 镜像的 WAL 目录在数据目录下的 pg_wal 子目录）
+      - /data/timescaledb/data:/home/postgres/pgdata/data
+      - /data/timescaledb/backup:/home/postgres/pgdata/backup
+      - /data/timescaledb/logs:/home/postgres/pg_log
+      # 自定义配置文件（挂载到单独目录，通过初始化脚本应用）
+      - ./conf:/etc/postgresql-custom:ro
+      # 初始化脚本目录
+      - ./init-scripts:/docker-entrypoint-initdb.d:ro
+    # 资源限制和优化（docker-compose 标准语法）
+    mem_limit: 60g
+    mem_reservation: 48g
+    cpus: '50.0'
+    # 共享内存大小（必须与 POSTGRES_SHARED_BUFFERS 匹配或更大）
+    shm_size: 30gb
+    # 安全选项
+    security_opt:
+      - no-new-privileges:true
+    # 健康检查
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-postgres}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    # 内核参数优化（需要主机支持）
+    # 注意：使用 host 网络模式时，网络相关的 sysctl 需要在主机系统级别设置
+    # 网络参数（net.*）不能在 host 网络模式下通过容器设置
+    sysctls:
+      # 增加共享内存段大小（32GB = 34359738368 字节）
+      - kernel.shmmax=34359738368
+      - kernel.shmall=5242880
+    # 使用特权模式以应用 sysctls（如果不需要 sysctls，可以移除）
+    privileged: true
+    # 或者使用 cap_add 替代
+    cap_add:
+      - SYS_RESOURCE
+      - IPC_LOCK
+    ulimits:
+      # 文件描述符限制
+      nofile:
+        soft: 65536
+        hard: 65536
+    # 日志配置
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
