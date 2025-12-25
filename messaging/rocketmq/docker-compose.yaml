@@ -1,0 +1,59 @@
+version: '3.8'
+services:
+  namesrv:
+    image: apache/rocketmq:5.3.2
+    container_name: rmqnamesrv
+    ports:
+      - 9876:9876
+    networks:
+      - rocketmq
+    command: sh mqnamesrv
+  broker:
+    image: apache/rocketmq:5.3.2
+    container_name: rmqbroker
+    ports:
+      - 10909:10909
+      - 10911:10911
+      - 10912:10912
+    environment:
+      - NAMESRV_ADDR=rmqnamesrv:9876
+      # 开启自动创建 Topic，方便开发调试
+      - AUTO_CREATE_TOPIC_ENABLE=true
+    depends_on:
+      - namesrv
+    networks:
+      - rocketmq
+    # command: sh mqbroker
+    # 启动 Broker 并指定连接 Nameserver，同时允许自动创建 Topic
+    command: sh mqbroker -n rmqnamesrv:9876 -c ../conf/broker.conf autoCreateTopicEnable=true
+  proxy:
+    image: apache/rocketmq:5.3.2
+    container_name: rmqproxy
+    networks:
+      - rocketmq
+    depends_on:
+      - broker
+      - namesrv
+    ports:
+      - 8080:8080
+      - 8081:8081
+    restart: on-failure
+    environment:
+      - NAMESRV_ADDR=rmqnamesrv:9876
+    command: sh mqproxy
+  dashboard:
+    image: apacherocketmq/rocketmq-dashboard:2.1.0
+    container_name: rmqdashboard
+    ports:
+      # 宿主机端口设为 18080，避免和 Proxy 的 8080 冲突
+      - 18080:8082
+    environment:
+      # 配置 Nameserver 地址 (容器名:端口)
+      - JAVA_OPTS=-Drocketmq.namesrv.addr=rmqnamesrv:9876 -Xmx256M -Xms256M
+    networks:
+      - rocketmq
+    depends_on:
+      - namesrv
+networks:
+  rocketmq:
+    driver: bridge
