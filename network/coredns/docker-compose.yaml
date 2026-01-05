@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.9'
 services:
   coredns:
     image: coredns/coredns:1.9.3
@@ -8,3 +8,6 @@ services:
     volumes:
       - ./coredns:/etc/coredns
     command: -conf=/etc/coredns/Corefile
+    cpus: '2.0'
+    mem_limit: 2g
+    mem_reservation: 512m

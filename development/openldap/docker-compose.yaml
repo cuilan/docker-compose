@@ -22,6 +22,15 @@ services:
     volumes:
       - ./openldap_data:/var/lib/openldap
       - ./openldap_config:/etc/openldap/slapd.d
+    cpus: '1.0'
+    mem_limit: 1g
+    mem_reservation: 512m
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/127.0.0.1/389'"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   openldap-admin:
     container_name: openldap-admin
@@ -35,3 +44,12 @@ services:
       #PHPLDAPADMIN_LDAP_BASE_DN: "dc=weattech,dc=com"
     depends_on:
       - openldap
+    cpus: '1.0'
+    mem_limit: 1g
+    mem_reservation: 512m
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/127.0.0.1/80'"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s

@@ -7,6 +7,16 @@ services:
     volumes:
       - ./conf/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus-data:/prometheus
+    cpus: '2.0'
+    mem_limit: 4g
+    mem_reservation: 2g
+    healthcheck:
+      # Prometheus 提供 /-/healthy 端点用于健康检查
+      test: ['CMD-SHELL', 'wget --no-verbose --tries=1 --spider http://localhost:9090/-/healthy || exit 1']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
 volumes:
   prometheus-data:

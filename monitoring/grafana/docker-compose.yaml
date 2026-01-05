@@ -16,6 +16,18 @@ services:
     volumes:
       #- ./example_cluster/grafana/provisioning:/etc/grafana/provisioning
       - grafana-data:/var/lib/grafana
+    # 资源限制
+    cpus: '2.0'
+    mem_limit: 1024m
+    mem_reservation: 512m
+    healthcheck:
+      # 使用 Grafana 的健康检查 API 端点
+      # 如果容器内没有 curl，可以使用 wget 或简单的端口检查
+      test: ['CMD-SHELL', 'curl -f http://localhost:3000/api/health || exit 1']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
 volumes:
   grafana-data:

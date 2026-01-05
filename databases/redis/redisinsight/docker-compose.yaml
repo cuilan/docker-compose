@@ -20,6 +20,10 @@ services:
       # 设置用户和组 ID（如果镜像支持）
       - PUID=1000
       - PGID=1000
+    # 资源限制
+    cpus: '1.0'
+    mem_limit: 512m
+    mem_reservation: 256m
     # 健康检查
     healthcheck:
       test: ['CMD-SHELL', 'wget --no-verbose --tries=1 --spider http://127.0.0.1:5540/api/health/']

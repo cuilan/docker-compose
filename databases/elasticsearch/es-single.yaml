@@ -3,8 +3,10 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     container_name: es01
     ports:
+      # HTTP 端口（用于 REST API）
       - 9200:9200
-      - 9300:9200
+      # 传输端口（用于节点间通信，单节点模式下可以不映射）
+      - 9300:9300
     environment:
       - node.name=es01
       # 单节点模式
@@ -18,12 +20,14 @@ services:
       memlock:
         soft: -1
         hard: -1
+    # 健康检查
     healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "curl http://localhost:9200 | grep -q 'missing authentication credentials'",
-        ]
+      # 使用 Elasticsearch 的 _cat/health 端点（官方推荐）
+      # 如果 Elasticsearch 服务正常，该端点会返回 200 状态码
+      test: ["CMD-SHELL", "curl -sf http://localhost:9200/_cat/health?format=json || exit 1"]
+      # 严格检查集群状态：JSON 数组，包含 status 字段（green/yellow/red）
+      #test: ["CMD-SHELL", "curl -sf http://localhost:9200/_cat/health?format=json | grep -q '\"status\":\"green\"\\|\"status\":\"yellow\"' || exit 1"]      
       interval: 10s
       timeout: 10s
       retries: 120
+      start_period: 30s

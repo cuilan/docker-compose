@@ -8,6 +8,16 @@ services:
     networks:
       - rocketmq
     command: sh mqnamesrv
+    cpus: '4.0'
+    mem_limit: 4g
+    mem_reservation: 2g
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/127.0.0.1/9876'"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
   broker:
     image: apache/rocketmq:5.3.2
     container_name: rmqbroker
@@ -27,6 +37,16 @@ services:
       - ./conf/broker.conf:/home/rocketmq/rocketmq-5.3.2/conf/broker.conf
     # 启动 Broker 并指定连接 Nameserver，同时允许自动创建 Topic
     command: sh mqbroker -n rmqnamesrv:9876 -c /home/rocketmq/rocketmq-5.3.2/conf/broker.conf
+    cpus: '8.0'
+    mem_limit: 16g
+    mem_reservation: 4g
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/127.0.0.1/10911'"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
   proxy:
     image: apache/rocketmq:5.3.2
     container_name: rmqproxy
@@ -42,6 +62,16 @@ services:
     environment:
       - NAMESRV_ADDR=rmqnamesrv:9876
     command: sh mqproxy
+    cpus: '4.0'
+    mem_limit: 4g
+    mem_reservation: 2g
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/127.0.0.1/8080'"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
   dashboard:
     image: apacherocketmq/rocketmq-dashboard:2.1.0
     container_name: rmqdashboard
@@ -55,6 +85,16 @@ services:
       - rocketmq
     depends_on:
       - namesrv
+    cpus: '2.0'
+    mem_limit: 2g
+    mem_reservation: 1g
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8082/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
 networks:
   rocketmq:
     driver: bridge
