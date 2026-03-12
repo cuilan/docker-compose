@@ -1,0 +1,46 @@
+services:
+  emby:
+    image: emby/embyserver:latest
+    container_name: emby
+    restart: unless-stopped
+    privileged: true
+    ports:
+      - "8096:8096"
+    environment:
+      - UID=1000
+      - GID=1000
+      - TZ=Asia/Shanghai
+    volumes:
+      - /vol1/1000/docker-compose/emby/config:/config # emby配置文件存储路径
+      - /vol2/@team/sex:/media # 电影路径
+
+
+  metatube:
+    image: ghcr.io/metatube-community/metatube-server:latest
+    container_name: metatube
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    environment:
+      - HTTP_PROXY=http://192.168.31.69:7893 # 填你自己的局域网代理地址
+      - HTTPS_PROXY=http://192.168.31.69:7893 # 填你自己的局域网代理地址
+    volumes:
+      - ./data:/data  # 将本地的 data 目录映射到容器内，用于持久化存储 SQLite 文件
+    command: -dsn "/data/metatube.db" -port 8080 -db-auto-migrate
+
+
+  # alist:
+  #   image: 'xhofe/alist:latest'
+  #   container_name: alist
+  #   restart: always
+  #   volumes:
+  #     # 映射 Alist 的核心数据和配置文件
+  #     - './data:/opt/alist/data'
+  #     # 【重要】如果你需要让 Alist 读取并挂载你 NAS 里的本地电影、文件，请取消下面这行的注释并修改路径
+  #     # - '/volume1/Media:/Media'
+  #   ports:
+  #     - '5244:5244'
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - UMASK=022
