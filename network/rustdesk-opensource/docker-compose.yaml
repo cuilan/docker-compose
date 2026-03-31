@@ -1,4 +1,5 @@
 services:
+  # ID 服务
   hbbs:
     container_name: hbbs
     image: rustdesk/rustdesk-server:1.1.15
@@ -12,6 +13,7 @@ services:
       - hbbr
     restart: unless-stopped
 
+  # 中继服务
   hbbr:
     container_name: hbbr
     image: rustdesk/rustdesk-server:1.1.15
@@ -20,3 +22,26 @@ services:
       - ./data:/root
     network_mode: "host"
     restart: unless-stopped
+
+  # 核心：API 服务器 (Go 版本)
+  rustdesk-api:
+    container_name: rustdesk-api
+    image: ghcr.io/lejianwen/rustdesk-api:full-s6
+    environment:
+      - TZ=Asia/Shanghai
+      - RUSTDESK_API_RUSTDESK_ID_SERVER=<server[:21116]>
+      - RUSTDESK_API_RUSTDESK_RELAY_SERVER=<server[:21117]>
+      - RUSTDESK_API_RUSTDESK_API_SERVER=http://<server[:21114]>
+      - RUSTDESK_API_RUSTDESK_KEY=<key>
+      - RUSTDESK_API_APP_WEB_CLIENT=0 # 是否启用web-client; 1:启用,0:不启用; 默认启用
+      - RUSTDESK_API_APP_REGISTER=false # 是否开启注册; true, false 默认false
+      - RUSTDESK_API_APP_SHOW_SWAGGER=0 # 是否可见swagger文档;1显示，0不显示，默认0不显示
+    ports:
+      - 21114:21114
+    volumes:
+      - ./api_data:/app/data #将数据库挂载出来方便备份
+      #- ./data:/app/conf/data #挂载key文件到api容器，可以不用使用 RUSTDESK_API_RUSTDESK_KEY
+    restart: unless-stopped
+    depends_on:
+      - hbbs
+      - hbbr
