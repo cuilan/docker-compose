@@ -26,7 +26,7 @@ services:
   # 核心：API 服务器 (Go 版本)
   rustdesk-api:
     container_name: rustdesk-api
-    image: ghcr.io/lejianwen/rustdesk-api:full-s6
+    image: ghcr.io/lejianwen/rustdesk-api:v2.7
     environment:
       - TZ=Asia/Shanghai
       - RUSTDESK_API_RUSTDESK_ID_SERVER=<server[:21116]>

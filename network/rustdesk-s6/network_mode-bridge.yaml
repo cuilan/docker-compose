@@ -1,0 +1,33 @@
+services:
+  rustdesk:
+    container_name: rustdesk-server
+    image: ghcr.io/lejianwen/rustdesk-server-s6:v0
+    ports:
+      - 21114:21114
+      - 21115:21115
+      - 21116:21116
+      - 21116:21116/udp
+      - 21117:21117
+      - 21118:21118
+      - 21119:21119
+    environment:
+      - RELAY=61.148.222.62:21117
+      - ENCRYPTED_ONLY=1
+      - MUST_LOGIN=Y
+      - TZ=Asia/Shanghai
+      - RUSTDESK_API_RUSTDESK_ID_SERVER=61.148.222.62:21116
+      - RUSTDESK_API_RUSTDESK_RELAY_SERVER=61.148.222.62:21117
+      - RUSTDESK_API_RUSTDESK_API_SERVER=http://61.148.222.62:21114
+      - RUSTDESK_API_KEY_FILE=/data/id_ed25519.pub
+      - RUSTDESK_API_JWT_KEY=xxxxxx # jwt key
+    volumes:
+      - ./db:/db
+      - ./data:/data
+      - ./api_data:/app/data
+    networks:
+      - rustdesk-net
+    restart: unless-stopped
+
+networks:
+  rustdesk-net:
+    external: false

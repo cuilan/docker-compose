@@ -1,0 +1,20 @@
+services:
+  rustdesk:
+    container_name: rustdesk-server
+    image: ghcr.io/lejianwen/rustdesk-server-s6:v0
+    environment:
+      - RELAY=xxx.xxx.xxx.xxx:21117
+      - ENCRYPTED_ONLY=1  # 如果设置为 "1"，将不接受未加密的连接
+      - MUST_LOGIN=Y  # 必须登录才能使用
+      - TZ=Asia/Shanghai
+      - RUSTDESK_API_RUSTDESK_ID_SERVER=xxx.xxx.xxx.xxx:21116
+      - RUSTDESK_API_RUSTDESK_RELAY_SERVER=xxx.xxx.xxx.xxx:21117
+      - RUSTDESK_API_RUSTDESK_API_SERVER=http://xxx.xxx.xxx.xxx:21114
+      - RUSTDESK_API_KEY_FILE=/data/id_ed25519.pub
+      #- RUSTDESK_API_JWT_KEY=xxxxxx # jwt key
+    volumes:
+      - ./db:/db
+      - ./data:/data
+      - ./api_data:/app/data
+    network_mode: "host"
+    restart: unless-stopped
