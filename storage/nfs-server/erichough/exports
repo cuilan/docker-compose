@@ -1,0 +1,28 @@
+
+# ro: 只读访问。
+# rw: 读写访问。
+# sync: (默认) 当客户端发出写入请求时，NFS 服务器会将数据写入磁盘后才返回成功。更安全，但性能稍低。
+# async: 当客户端发出写入请求时，NFS 服务器将数据写入内存后就返回成功，然后异步写入磁盘。性能更好，但数据丢失风险稍高（例如服务器突然断电）。
+# no_subtree_check: 禁用子树检查。通常建议使用，可以避免在某些情况下客户端访问子目录时出现问题。
+# no_root_squash: 禁用 root 用户映射。如果客户端以 root 用户身份连接，NFS 服务器也会将其视为 root 用户。这存在安全风险，请谨慎使用。
+# root_squash: (默认) 将客户端的 root 用户映射为服务器上的匿名用户（通常是 nfsnobody）。提高了安全性。
+# all_squash: 将所有客户端用户都映射为服务器上的匿名用户。
+# anonuid=UID: 当使用 root_squash 或 all_squash 时，指定匿名用户的 UID。
+# anongid=GID: 当使用 root_squash 或 all_squash 时，指定匿名用户的 GID。
+# =====================================================================
+
+# 1. 只读共享目录，允许所有服务器访问
+/data/readonly *(ro,no_subtree_check,sync)
+
+# 2. 关键读写目录，只允许两个特定服务器读写
+# 10.121.1.202 允许读写
+# 10.121.1.203 允许读写
+/data/readwrite 10.121.1.202(rw,no_subtree_check,sync) 10.121.1.203(rw,no_subtree_check,sync)
+
+# 3. 开发数据目录，允许 10.121.2.0/24 网段读写，并允许 root 权限 (不建议在生产环境使用)
+# 这里使用了 async 提高性能，但有数据丢失风险
+# no_root_squash 意味着客户端的 root 用户就是服务器的 root
+/data/dev_data 10.121.2.0/24(rw,no_subtree_check,async,no_root_squash)
+
+# 4. 备份目录，只允许 10.121.1.204 读写，强制同步写入
+/data/backup 10.121.1.204(rw,no_subtree_check,sync)
