@@ -8,8 +8,7 @@ services:
       # 定义容器内共享目录、权限
       - ./exports:/etc/exports:ro
       # 定义挂载目录
-      - /data_nfs_ro:/data/readonly
-      - /data_nfs_rw:/data/readwrite
+      - /data:/data
     ports:
       # NFSv4 only
       - 2049:2049

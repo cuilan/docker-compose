@@ -11,18 +11,21 @@
 # anongid=GID: 当使用 root_squash 或 all_squash 时，指定匿名用户的 GID。
 # =====================================================================
 
-# 1. 只读共享目录，允许所有服务器访问
-/data/readonly *(ro,no_subtree_check,sync)
 
-# 2. 关键读写目录，只允许两个特定服务器读写
-# 10.121.1.202 允许读写
-# 10.121.1.203 允许读写
-/data/readwrite 10.121.1.202(rw,no_subtree_check,sync) 10.121.1.203(rw,no_subtree_check,sync)
+# 先暴露父目录
+# 仅对 10.121.1.0/24 网段开放
+# ro只读，且将此目录设置：fsid=0，即此目录为NFS的根目录
+/data 10.121.1.0/24(ro,fsid=0,no_subtree_check,insecure)
 
-# 3. 开发数据目录，允许 10.121.2.0/24 网段读写，并允许 root 权限 (不建议在生产环境使用)
-# 这里使用了 async 提高性能，但有数据丢失风险
-# no_root_squash 意味着客户端的 root 用户就是服务器的 root
-/data/dev_data 10.121.2.0/24(rw,no_subtree_check,async,no_root_squash)
+# 具体共享的子目录
+# 仅对 10.121.1.60 IP开放
+# ro/rw 设置读写权限，fsid=60 设置该挂载用户可见的根目录
+# nohide 为不隐藏中间目录
+/data/user1     10.121.1.60(ro,fsid=60,nohide,no_subtree_check,no_root_squash,sync,insecure)
 
-# 4. 备份目录，只允许 10.121.1.204 读写，强制同步写入
-/data/backup 10.121.1.204(rw,no_subtree_check,sync)
+
+# 具体共享的子目录
+# 仅对 10.121.1.70/72/73 开放
+# ro/rw 设置读写权限，fsid=70 设置该挂载用户可见的根目录，注意同一个目录只能有一个fsid
+# nohide 为不隐藏中间目录
+/data/user2 10.121.1.70(ro,fsid=70,nohide,no_subtree_check,no_root_squash,sync,insecure) 10.121.1.72(ro,fsid=70,nohide,no_subtree_check,no_root_squash,sync,insecure) 10.121.1.73(ro,fsid=70,nohide,no_subtree_check,no_root_squash,sync,insecure)
