@@ -80,6 +80,9 @@ The project is organized by functionality for easy management and discovery:
   - `minio-simple/` - Standalone Version
   - `minio-cluster/` - Cluster Version (with Nginx Load Balancer)
 - **nfs-server/** - NFS Network File System Service
+  - `erichough/` - New NFSv4 configuration: `/data` is only the `fsid=0` pseudo filesystem root, while `/data/user1`, `/data/user2`, and other subdirectories are exported explicitly
+  - Clients should mount `nfs-server-ip:/user1` or `nfs-server-ip:/user2` instead of mounting `nfs-server-ip:/data` directly
+  - Access is controlled in `exports` by client IP, read-only/read-write options, and flags such as `sync`, `no_root_squash`, and `insecure`
 - **samba/** - Samba File Sharing Service
 - **ftp-server/** - FTP File Transfer Service
 - **docker-registry/** - Docker Private Image Registry

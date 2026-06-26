@@ -80,6 +80,9 @@ docker compose up -d
   - `minio-simple/` - 单机版
   - `minio-cluster/` - 集群版（包含 Nginx 负载均衡）
 - **nfs-server/** - NFS 网络文件系统服务
+  - `erichough/` - 新版 NFSv4 配置：`/data` 仅作为 `fsid=0` 伪文件系统根，实际共享 `/data/user1`、`/data/user2` 等子目录
+  - 客户端挂载时使用 `nfs-server-ip:/user1`、`nfs-server-ip:/user2`，不要直接挂载 `nfs-server-ip:/data`
+  - 在 `exports` 中按客户端 IP 配置只读/读写权限，并通过 `sync`、`no_root_squash`、`insecure` 等选项控制访问行为
 - **samba/** - Samba 文件共享服务
 - **ftp-server/** - FTP 文件传输服务
 - **docker-registry/** - Docker 私有镜像仓库

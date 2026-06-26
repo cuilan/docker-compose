@@ -1,4 +1,3 @@
-
 # ro: 只读访问。
 # rw: 读写访问。
 # sync: (默认) 当客户端发出写入请求时，NFS 服务器会将数据写入磁盘后才返回成功。更安全，但性能稍低。
@@ -9,23 +8,27 @@
 # all_squash: 将所有客户端用户都映射为服务器上的匿名用户。
 # anonuid=UID: 当使用 root_squash 或 all_squash 时，指定匿名用户的 UID。
 # anongid=GID: 当使用 root_squash 或 all_squash 时，指定匿名用户的 GID。
+# insecure: 允许从非特权端口（>1024）的客户端连接。在受控的内部网络中可能可以接受。
 # =====================================================================
 
+# 此行定义 NFSv4 伪文件系统根 (fsid=0)。
+# 它不包含任何客户端访问权限，因此客户端无法直接挂载 'nfs-server-ip:/data' 来访问 /data 的内容。
+# 它的作用仅仅是作为 NFSv4 伪文件系统的入口，所有其他显式导出的子目录都将通过此伪文件系统暴露。
+# 客户端将挂载 'nfs-server-ip:/' 来访问整个 NFSv4 伪文件系统。
+/data fsid=0
 
-# 先暴露父目录
-# 仅对 10.121.1.0/24 网段开放
-# ro只读，且将此目录设置：fsid=0，即此目录为NFS的根目录
-/data 10.121.1.0/24(ro,fsid=0,no_subtree_check,insecure)
-
-# 具体共享的子目录
+# 具体共享的子目录 /data/user1
 # 仅对 10.121.1.60 IP开放
-# ro/rw 设置读写权限，fsid=60 设置该挂载用户可见的根目录
-# nohide 为不隐藏中间目录
-/data/user1     10.121.1.60(ro,fsid=60,nohide,no_subtree_check,no_root_squash,sync,insecure)
+# ro/rw 设置读写权限
+# 由于 /data 已经定义了 fsid=0 作为伪文件系统根，且 /data/user1 是其子目录，
+# 通常不需要为子目录单独指定 fsid。客户端将通过 'nfs-server-ip:/user1' 挂载此目录。
+# nohide 对于 NFSv4 伪文件系统来说通常不是必需的，但保留无害。
+/data/user1 10.121.1.60(ro,no_subtree_check,no_root_squash,sync,insecure)
 
 
-# 具体共享的子目录
-# 仅对 10.121.1.70/72/73 开放
-# ro/rw 设置读写权限，fsid=70 设置该挂载用户可见的根目录，注意同一个目录只能有一个fsid
-# nohide 为不隐藏中间目录
-/data/user2 10.121.1.70(ro,fsid=70,nohide,no_subtree_check,no_root_squash,sync,insecure) 10.121.1.72(ro,fsid=70,nohide,no_subtree_check,no_root_squash,sync,insecure) 10.121.1.73(ro,fsid=70,nohide,no_subtree_check,no_root_squash,sync,insecure)
+# 具体共享的子目录 /data/user2
+# 仅对 10.121.1.70/72/73 IP开放
+# ro/rw 设置读写权限
+# 同上，此处不再需要 fsid。客户端将通过 'nfs-server-ip:/user2' 挂载此目录。
+/data/user2 10.121.1.70(ro,no_subtree_check,no_root_squash,sync,insecure) 10.121.1.72(ro,no_subtree_check,no_root_squash,sync,insecure) 10.121.1.73(ro,no_subtree_check,no_root_squash,sync,insecure)
+
