@@ -7,8 +7,8 @@ services:
     volumes:
       # 定义容器内共享目录、权限
       - ./exports:/etc/exports:ro
-      # 定义挂载目录
-      - /data:/data
+      # 定义挂载目录，要写必须明确指出rw权限
+      - /data:/data:rw
     ports:
       # NFSv4 only
       - 2049:2049
