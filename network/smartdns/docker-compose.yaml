@@ -1,0 +1,16 @@
+services:
+  smartdns:
+    image: pymumu/smartdns:latest
+    container_name: smartdns
+    restart: always
+    network_mode: host
+    environment:
+      # BusyBox 下 POSIX 格式设置 TZ 时区配置
+      - TZ=CST-8
+    volumes:
+      # 主配置
+      - ./data/etc/smartdns:/etc/smartdns
+      # 数据库
+      - ./data/var/lib/smartdns:/var/lib/smartdns
+      # 日志
+      - ./data/var/log/smartdns:/var/log/smartdns
