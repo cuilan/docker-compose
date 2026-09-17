@@ -1,0 +1,12 @@
+services:
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    restart: always
+    network_mode: host
+    command: tunnel --no-autoupdate run --token xxxxxx
+
+
+# docker run cloudflare/cloudflared:latest tunnel \
+#     --no-autoupdate run \
+#     --token xxxxxxx
